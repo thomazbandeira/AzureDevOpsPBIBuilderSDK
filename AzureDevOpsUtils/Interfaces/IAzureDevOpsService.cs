@@ -15,17 +15,17 @@ namespace AzureDevOpsUtils.Interfaces
     public interface IAzureDevOpsService
     {
 
-        Task<WorkItem> CreateWorkItem(WorkItemTypeEnum workItemType, string title, string description, int? parentWorkItemId = null);
+        Task<WorkItem> CreateWorkItem(WorkItemTypeEnum workItemType, string title, string description, int? parentWorkItemId = null, CancellationToken cancellationToken = default);
 
-        Task<List<WorkItem>> GetWorkItems(WorkItemTypeEnum workItemType);
-        Task<WorkItem> CreateWorkItem(string workItemType, string title, string description, int? parentWorkItemId = null);
+        Task<List<WorkItem>> GetWorkItems(WorkItemTypeEnum workItemType, CancellationToken cancellationToken = default);
+        Task<WorkItem> CreateWorkItem(string workItemType, string title, string description, int? parentWorkItemId = null, CancellationToken cancellationToken = default);
 
-        Task<WorkItem> UpdateWorkItem(int id, string title, string description);
+        Task<WorkItem> UpdateWorkItem(int id, string title, string description, CancellationToken cancellationToken = default);
 
-        Task DeleteWorkItem(int id);
+        Task DeleteWorkItem(int id, CancellationToken cancellationToken = default);
 
-        Task<WorkItem> GetWorkItem(int id);
+        Task<WorkItem> GetWorkItem(int id, CancellationToken cancellationToken = default);
 
-        Task<List<WorkItem>> GetWorkItems(string workItemType);
+        Task<List<WorkItem>> GetWorkItems(string workItemType, CancellationToken cancellationToken = default);
     }
 }
