@@ -14,9 +14,10 @@ namespace AzureDevOpsUtils.Tests
         }
 
         [Fact]
-        public void TestMethod1()
+        public async void WhenExecuteCreateWorkItemAsyncEnum()
         {
-            
+            await _azureDevOpsManager.CreateWorkItemAsync(Enums.WorkItemTypeEnum.Task,"Title","Description").ConfigureAwait(false);
+
             // Arrange
             // Setup your mock and test data here
 

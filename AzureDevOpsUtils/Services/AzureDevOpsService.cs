@@ -32,10 +32,10 @@ namespace AzureDevOpsUtils.Services
 
         public async Task<WorkItem> CreateWorkItem(WorkItemTypeEnum workItemType, string title, string description, int? parentWorkItemId = null, CancellationToken cancellationToken = default)
         {
-            return await CreateWorkItem(workItemType.ToString().Replace("_", " "), title, description, parentWorkItemId, cancellationToken).ConfigureAwait(false);
+            return await CreateWorkItemAsync(workItemType.ToString().Replace("_", " "), title, description, parentWorkItemId, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<WorkItem> CreateWorkItem(string workItemType, string title, string description, int? parentWorkItemId = null, CancellationToken cancellationToken = default)
+        public async Task<WorkItem> CreateWorkItemAsync(string workItemType, string title, string description, int? parentWorkItemId = null, CancellationToken cancellationToken = default)
         {
             var workItem = new JsonPatchDocument
         {
@@ -79,7 +79,7 @@ namespace AzureDevOpsUtils.Services
             }
         }
 
-        public async Task DeleteWorkItem(int id, CancellationToken cancellationToken = default)
+        public async Task DeleteWorkItemAsync(int id, CancellationToken cancellationToken = default)
         {
             using (var connection = GetConnection())
             {
@@ -88,7 +88,7 @@ namespace AzureDevOpsUtils.Services
             }
         }
 
-        public async Task<WorkItem> GetWorkItem(int id, CancellationToken cancellationToken = default)
+        public async Task<WorkItem> GetWorkItemAsync(int id, CancellationToken cancellationToken = default)
         {
             using (var connection = GetConnection())
             {
@@ -99,10 +99,10 @@ namespace AzureDevOpsUtils.Services
 
         public async Task<List<WorkItem>> GetWorkItems(WorkItemTypeEnum workItemType, CancellationToken cancellationToken = default)
         {
-            return await GetWorkItems(workItemType.ToString().Replace("_", " "), cancellationToken).ConfigureAwait(false);
+            return await GetWorkItemsAsync(workItemType.ToString().Replace("_", " "), cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<List<WorkItem>> GetWorkItems(string workItemType, CancellationToken cancellationToken = default)
+        public async Task<List<WorkItem>> GetWorkItemsAsync(string workItemType, CancellationToken cancellationToken = default)
         {
             using (var connection = GetConnection())
             {
@@ -114,7 +114,7 @@ namespace AzureDevOpsUtils.Services
             }
         }
 
-        public async Task<WorkItem> UpdateWorkItem(int id, string title, string description, CancellationToken cancellationToken = default)
+        public async Task<WorkItem> UpdateWorkItemAsync(int id, string title, string description, CancellationToken cancellationToken = default)
         {
             var workItem = new JsonPatchDocument
         {
