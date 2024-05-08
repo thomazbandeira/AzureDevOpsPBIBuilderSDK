@@ -28,6 +28,63 @@ namespace AzureDevOpsUtils.Tests
             // Verify the results here
         }
 
+        [Fact]
+        public async void WhenExecuteGetWorkItemsAsyncEnum()
+        {
+            await _azureDevOpsManager.GetWorkItemsAsync(Enums.WorkItemTypeEnum.Task).ConfigureAwait(false);
+
+            // Arrange
+            // Setup your mock and test data here
+
+            // Act
+            // Call the method you want to test here
+
+            // Assert
+            // Verify the results here
+        }
+        [Fact]
+        public async void WhenExecuteGetWorkItemAsyncEnum()
+        {
+            await _azureDevOpsManager.GetWorkItemAsync(1).ConfigureAwait(false);
+
+            // Arrange
+            // Setup your mock and test data here
+
+            // Act
+            // Call the method you want to test here
+
+            // Assert
+            // Verify the results here
+        }
+        [Fact]
+        public async void WhenExecuteDeleteWorkItemAsyncEnum()
+        {
+            await _azureDevOpsManager.DeleteWorkItemAsync(1).ConfigureAwait(false);
+
+            // Arrange
+            // Setup your mock and test data here
+
+            // Act
+            // Call the method you want to test here
+
+            // Assert
+            // Verify the results here
+        }
+        [Fact]
+        public async void WhenExecuteUpdateWorkItemAsyncEnum()
+        {
+            await _azureDevOpsManager.UpdateWorkItemAsync(1, "title2", "description2").ConfigureAwait(false);
+
+            // Arrange
+            // Setup your mock and test data here
+
+            // Act
+            // Call the method you want to test here
+
+            // Assert
+            // Verify the results here
+        }
+        
         // Add more tests for other methods in AzureDevOpsManager
     }
 }
