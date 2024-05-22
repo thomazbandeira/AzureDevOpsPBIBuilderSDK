@@ -19,28 +19,28 @@ namespace AzureDevOpsUtils
         {
             _azureDevOpsService = azureDevOpsService;
         }
-        public async Task<WorkItem> CreateWorkItemAsync(WorkItemTypeEnum workItemType, string title, string description, int? parentWorkItemId = null)
+        public async Task<WorkItem> CreateWorkItemAsync(WorkItemTypeEnum workItemType, string title, string description=null, string discursion=null, string[] tags = null, int? parentWorkItemId = null, CancellationToken cancellationToken = default)
         {
-            return await _azureDevOpsService.CreateWorkItemAsync(workItemType.ToString().Replace("_", " "), title, description, parentWorkItemId).ConfigureAwait(false);
+            return await _azureDevOpsService.CreateWorkItemAsync(workItemType.ToString().Replace("_", " "), title, description, discursion,tags, parentWorkItemId, cancellationToken).ConfigureAwait(false);
         }
-        public async Task<List<WorkItem>> GetWorkItemsAsync(WorkItemTypeEnum workItemType)
+        public async Task<List<WorkItem>> GetWorkItemsAsync(WorkItemTypeEnum workItemType, CancellationToken cancellationToken = default)
         {
-            return await _azureDevOpsService.GetWorkItemsAsync(workItemType.ToString().Replace("_", " ")).ConfigureAwait(false);
-        }
-
-        public async Task<WorkItem> UpdateWorkItemAsync(int id, string title, string description)
-        {
-         return await _azureDevOpsService.UpdateWorkItemAsync(id, title, description).ConfigureAwait(false);
+            return await _azureDevOpsService.GetWorkItemsAsync(workItemType.ToString().Replace("_", " "), cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task DeleteWorkItemAsync(int id)
+        public async Task<WorkItem> UpdateWorkItemAsync(int id, string title, string description=null, string discursion = null, string[] tags = null, int? parentWorkItemId = null, CancellationToken cancellationToken = default)
         {
-             await _azureDevOpsService.DeleteWorkItemAsync(id).ConfigureAwait(false);
+         return await _azureDevOpsService.UpdateWorkItemAsync(id, title, description,discursion,tags, parentWorkItemId, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<WorkItem> GetWorkItemAsync(int id)
+        public async Task DeleteWorkItemAsync(int id, CancellationToken cancellationToken = default)
         {
-           return await _azureDevOpsService.GetWorkItemAsync(id).ConfigureAwait(false);
+             await _azureDevOpsService.DeleteWorkItemAsync(id,cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task<WorkItem> GetWorkItemAsync(int id, CancellationToken cancellationToken = default)
+        {
+           return await _azureDevOpsService.GetWorkItemAsync(id, cancellationToken).ConfigureAwait(false);
         }
     }
 }

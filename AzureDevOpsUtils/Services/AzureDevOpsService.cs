@@ -30,28 +30,62 @@ namespace AzureDevOpsUtils.Services
             return connection;
         }
 
-        public async Task<WorkItem> CreateWorkItem(WorkItemTypeEnum workItemType, string title, string description, int? parentWorkItemId = null, CancellationToken cancellationToken = default)
+        public async Task<WorkItem> CreateWorkItemAsync(WorkItemTypeEnum workItemType, string title, string description, string discursion = null, string[] tags = null, int? parentWorkItemId = null, CancellationToken cancellationToken = default)
         {
-            return await CreateWorkItemAsync(workItemType.ToString().Replace("_", " "), title, description, parentWorkItemId, cancellationToken).ConfigureAwait(false);
+            return await CreateWorkItemAsync(workItemType.ToString().Replace("_", " "), title, description, discursion, tags, parentWorkItemId, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<WorkItem> CreateWorkItemAsync(string workItemType, string title, string description, int? parentWorkItemId = null, CancellationToken cancellationToken = default)
+        public async Task<WorkItem> CreateWorkItemAsync(string workItemType, string title, string description, string discursion = null,string[] tags=null, int? parentWorkItemId = null, CancellationToken cancellationToken = default)
         {
-            var workItem = new JsonPatchDocument
+            JsonPatchDocument workItem = jSonPatchDocumentMount(title, description, discursion, tags, parentWorkItemId);
+
+            using (var connection = GetConnection())
+            {
+                var workItemTrackingHttpClient = connection.GetClient<WorkItemTrackingHttpClient>();
+                return await workItemTrackingHttpClient.CreateWorkItemAsync(workItem, _project, workItemType, cancellationToken: cancellationToken);
+            }
+        }
+
+        private JsonPatchDocument jSonPatchDocumentMount(string title, string description = null, string discursion = null, string[] tags = null, int? parentWorkItemId = null)
         {
-            new JsonPatchOperation()
+            var workItem = new JsonPatchDocument();
+
+            workItem.Add(new JsonPatchOperation()
             {
                 Operation = Operation.Add,
                 Path = "/fields/System.Title",
                 Value = title
-            },
-            new JsonPatchOperation()
+            });
+            if (description != null)
             {
-                Operation = Operation.Add,
-                Path = "/fields/System.Description",
-                Value = description
+                workItem.Add(new JsonPatchOperation()
+                {
+                    Operation = Operation.Add,
+                    Path = "/fields/System.Description",
+                    Value = description
+                });
             }
-        };
+
+            if (discursion != null)
+            {
+                workItem.Add(new JsonPatchOperation()
+                {
+                    Operation = Operation.Add,
+                    Path = "/fields/System.History",
+                    Value = discursion
+                });
+            }
+            if (tags != null && tags.Length > 0)
+            {
+                workItem.Add(new JsonPatchOperation()
+                {
+                    Operation = Operation.Add,
+                    Path = "/fields/System.Tags",
+                    Value = string.Join("; ", tags)
+                });
+            }
+
+
 
             if (parentWorkItemId.HasValue)
             {
@@ -72,11 +106,7 @@ namespace AzureDevOpsUtils.Services
                     });
             }
 
-            using (var connection = GetConnection())
-            {
-                var workItemTrackingHttpClient = connection.GetClient<WorkItemTrackingHttpClient>();
-                return await workItemTrackingHttpClient.CreateWorkItemAsync(workItem, _project, workItemType, cancellationToken: cancellationToken).ConfigureAwait(false);
-            }
+            return workItem;
         }
 
         public async Task DeleteWorkItemAsync(int id, CancellationToken cancellationToken = default)
@@ -84,7 +114,7 @@ namespace AzureDevOpsUtils.Services
             using (var connection = GetConnection())
             {
                 var workItemTrackingHttpClient = connection.GetClient<WorkItemTrackingHttpClient>();
-                await workItemTrackingHttpClient.DeleteWorkItemAsync(id, cancellationToken: cancellationToken).ConfigureAwait(false);
+                await workItemTrackingHttpClient.DeleteWorkItemAsync(id, cancellationToken: cancellationToken);
             }
         }
 
@@ -97,9 +127,9 @@ namespace AzureDevOpsUtils.Services
             }
         }
 
-        public async Task<List<WorkItem>> GetWorkItems(WorkItemTypeEnum workItemType, CancellationToken cancellationToken = default)
+        public async Task<List<WorkItem>> GetWorkItemsAsync(WorkItemTypeEnum workItemType, CancellationToken cancellationToken = default)
         {
-            return await GetWorkItemsAsync(workItemType.ToString().Replace("_", " "), cancellationToken).ConfigureAwait(false);
+            throw new NotImplementedException();
         }
 
         public async Task<List<WorkItem>> GetWorkItemsAsync(string workItemType, CancellationToken cancellationToken = default)
@@ -108,29 +138,15 @@ namespace AzureDevOpsUtils.Services
             {
                 var workItemTrackingHttpClient = connection.GetClient<WorkItemTrackingHttpClient>();
                 var wiql = new Wiql() { Query = $"Select [System.Id], [System.Title], [System.State] From WorkItems Where [System.WorkItemType] = '{workItemType}' order by [Microsoft.VSTS.Scheduling.StartDate] desc" };
-                var result = await workItemTrackingHttpClient.QueryByWiqlAsync(wiql, cancellationToken: cancellationToken);
+                var result = await workItemTrackingHttpClient.QueryByWiqlAsync(wiql);
                 var ids = result.WorkItems.Select(wi => wi.Id).ToArray();
-                return await workItemTrackingHttpClient.GetWorkItemsAsync(ids,cancellationToken: cancellationToken);
+                return await workItemTrackingHttpClient.GetWorkItemsAsync(ids, cancellationToken: cancellationToken);
             }
         }
 
-        public async Task<WorkItem> UpdateWorkItemAsync(int id, string title, string description, CancellationToken cancellationToken = default)
+        public async Task<WorkItem> UpdateWorkItemAsync(int id, string title, string description, string discursion = null, string[] tags = null, int? parentWorkItemId = null, CancellationToken cancellationToken = default)
         {
-            var workItem = new JsonPatchDocument
-        {
-            new JsonPatchOperation()
-            {
-                Operation = Operation.Add,
-                Path = "/fields/System.Title",
-                Value = title
-            },
-            new JsonPatchOperation()
-            {
-                Operation = Operation.Add,
-                Path = "/fields/System.Description",
-                Value = description
-            }
-        };
+            JsonPatchDocument workItem = jSonPatchDocumentMount(title, description, discursion,tags, parentWorkItemId);
 
             using (var connection = GetConnection())
             {

@@ -15,17 +15,15 @@ namespace AzureDevOpsUtils.Interfaces
     public interface IAzureDevOpsService
     {
 
-        Task<WorkItem> CreateWorkItem(WorkItemTypeEnum workItemType, string title, string description, int? parentWorkItemId = null, CancellationToken cancellationToken = default);
+        Task<WorkItem> CreateWorkItemAsync(WorkItemTypeEnum workItemType, string title, string description, string discursion = null, string[] tags = null, int? parentWorkItemId = null, CancellationToken cancellationToken = default);
 
-        Task<List<WorkItem>> GetWorkItems(WorkItemTypeEnum workItemType, CancellationToken cancellationToken = default);
-        Task<WorkItem> CreateWorkItemAsync(string workItemType, string title, string description, int? parentWorkItemId = null, CancellationToken cancellationToken = default);
-
-        Task<WorkItem> UpdateWorkItemAsync(int id, string title, string description, CancellationToken cancellationToken = default);
+        Task<WorkItem> CreateWorkItemAsync(string workItemType, string title, string description, string discursion = null, string[] tags = null, int? parentWorkItemId = null, CancellationToken cancellationToken = default);
 
         Task DeleteWorkItemAsync(int id, CancellationToken cancellationToken = default);
 
         Task<WorkItem> GetWorkItemAsync(int id, CancellationToken cancellationToken = default);
-
+        Task<List<WorkItem>> GetWorkItemsAsync(WorkItemTypeEnum workItemType, CancellationToken cancellationToken = default);
         Task<List<WorkItem>> GetWorkItemsAsync(string workItemType, CancellationToken cancellationToken = default);
+        Task<WorkItem> UpdateWorkItemAsync(int id, string title, string description, string discursion = null, string[] tags = null, int? parentWorkItemId = null, CancellationToken cancellationToken = default);
     }
 }
