@@ -1,4 +1,4 @@
-﻿using AzureDevOpsUtils.Enums;
+﻿using AzureDevOps.Model.Enum;
 using AzureDevOpsUtils.Services;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using System;
@@ -11,12 +11,12 @@ namespace AzureDevOpsUtils.Interfaces
 {
     public interface IAzureDevOpsManager
     {
-        Task<WorkItem> CreateWorkItem(WorkItemTypeEnum workItemType, string title, string description, int? parentWorkItemId = null);
+        Task<WorkItem> CreateWorkItem(WorkItemTypeEnum workItemType, string title, string description="", int? parentWorkItemId = null);
 
         Task<List<WorkItem>> GetWorkItems(WorkItemTypeEnum workItemType);
 
 
-        Task<WorkItem> UpdateWorkItem(int id, string title, string description);
+        Task<WorkItem> UpdateWorkItem(int id, string title, string description = "");
 
         Task DeleteWorkItem(int id);
 

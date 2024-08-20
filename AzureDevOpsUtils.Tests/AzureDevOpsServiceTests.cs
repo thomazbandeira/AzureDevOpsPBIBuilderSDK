@@ -1,4 +1,5 @@
-﻿using AzureDevOpsUtils.Interfaces;
+﻿using AzureDevOps.Model.Enum;
+using AzureDevOpsUtils.Interfaces;
 using Moq;
 namespace AzureDevOpsUtils.Tests
 {
@@ -13,10 +14,8 @@ namespace AzureDevOpsUtils.Tests
         }
 
         [Fact]
-        public async void WhenExecuteCreateWorkItemAsyncEnum()
+        public async Task WhenExecuteCreateWorkItemAsyncEnum()
         {
-            await _azureDevOpsService.CreateWorkItemAsync(Enums.WorkItemTypeEnum.Task, "Title", "Description").ConfigureAwait(false);
-
             // Arrange
             // Setup your mock and test data here
 
@@ -28,9 +27,21 @@ namespace AzureDevOpsUtils.Tests
         }
 
         [Fact]
-        public async void WhenExecuteGetWorkItemsAsyncEnum()
+        public async Task WhenExecuteGetWorkItemsAsyncEnum()
         {
-            await _azureDevOpsService.GetWorkItemsAsync(Enums.WorkItemTypeEnum.Task).ConfigureAwait(false);
+            // Arrange
+            // Setup your mock and test data here
+
+            // Act
+            // Call the method you want to test here
+
+            // Assert
+            // Verify the results here
+        }
+        [Fact]
+        public async Task WhenExecuteGetWorkItemAsyncEnum()
+        {
+            await _azureDevOpsService.GetWorkItemAsync(1);
 
             // Arrange
             // Setup your mock and test data here
@@ -42,9 +53,9 @@ namespace AzureDevOpsUtils.Tests
             // Verify the results here
         }
         [Fact]
-        public async void WhenExecuteGetWorkItemAsyncEnum()
+        public async Task WhenExecuteDeleteWorkItemAsyncEnum()
         {
-            await _azureDevOpsService.GetWorkItemAsync(1).ConfigureAwait(false);
+           await _azureDevOpsService.DeleteWorkItemAsync(1);
 
             // Arrange
             // Setup your mock and test data here
@@ -56,23 +67,9 @@ namespace AzureDevOpsUtils.Tests
             // Verify the results here
         }
         [Fact]
-        public async void WhenExecuteDeleteWorkItemAsyncEnum()
+        public async Task WhenExecuteUpdateWorkItemAsyncEnum()
         {
-            await _azureDevOpsService.DeleteWorkItemAsync(1).ConfigureAwait(false);
-
-            // Arrange
-            // Setup your mock and test data here
-
-            // Act
-            // Call the method you want to test here
-
-            // Assert
-            // Verify the results here
-        }
-        [Fact]
-        public async void WhenExecuteUpdateWorkItemAsyncEnum()
-        {
-            await _azureDevOpsService.UpdateWorkItemAsync(1, "title2", "description2").ConfigureAwait(false);
+            await _azureDevOpsService.UpdateWorkItemAsync(1, "title2", "description2");
 
             // Arrange
             // Setup your mock and test data here

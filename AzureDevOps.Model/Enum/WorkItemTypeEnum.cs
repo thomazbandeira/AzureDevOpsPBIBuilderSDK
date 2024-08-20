@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AzureDevOpsUtils.Enums
+namespace AzureDevOps.Model.Enum
 {
     public enum WorkItemTypeEnum
     {
         Epic,
+        Feature,
         Product_Backlog_Item,
         Task
     }

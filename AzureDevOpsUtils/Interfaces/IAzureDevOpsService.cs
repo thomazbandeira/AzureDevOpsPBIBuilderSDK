@@ -8,22 +8,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AzureDevOpsUtils.Enums;
+using AzureDevOps.Model.Enum;
 
 namespace AzureDevOpsUtils.Interfaces
 {
     public interface IAzureDevOpsService
-    {
-
-        Task<WorkItem> CreateWorkItemAsync(WorkItemTypeEnum workItemType, string title, string description, string discursion = null, string[] tags = null, int? parentWorkItemId = null, CancellationToken cancellationToken = default);
-
-        Task<WorkItem> CreateWorkItemAsync(string workItemType, string title, string description, string discursion = null, string[] tags = null, int? parentWorkItemId = null, CancellationToken cancellationToken = default);
+    {   
+        Task<WorkItem> CreateWorkItemAsync(string workItemType, string title, string description, string discursion = "", string[] tags = null, int? parentWorkItemId = null, CancellationToken cancellationToken = default);
 
         Task DeleteWorkItemAsync(int id, CancellationToken cancellationToken = default);
 
         Task<WorkItem> GetWorkItemAsync(int id, CancellationToken cancellationToken = default);
-        Task<List<WorkItem>> GetWorkItemsAsync(WorkItemTypeEnum workItemType, CancellationToken cancellationToken = default);
         Task<List<WorkItem>> GetWorkItemsAsync(string workItemType, CancellationToken cancellationToken = default);
-        Task<WorkItem> UpdateWorkItemAsync(int id, string title, string description, string discursion = null, string[] tags = null, int? parentWorkItemId = null, CancellationToken cancellationToken = default);
+        Task<WorkItem> UpdateWorkItemAsync(int id, string title, string description, string discursion = "", string[] tags = null, int? parentWorkItemId = null, CancellationToken cancellationToken = default);
     }
 }

@@ -14,4 +14,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AzureDevOps.Model\AzureDevOps.Model.csproj" />
+  </ItemGroup>
+
 </Project>
